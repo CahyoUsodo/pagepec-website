@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum ContentType {
+  ABOUT
+  PROGRAM
+  HOMEPAGE
+  OTHER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String
+  role          UserRole @default(EDITOR)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  contentCreated Content[] @relation("ContentCreatedBy")
+  contentUpdated Content[] @relation("ContentUpdatedBy")
+  mediaUploaded Media[]
+  articleCreated Article[] @relation("ArticleCreatedBy")
+  articleUpdated Article[] @relation("ArticleUpdatedBy")
+}
+
+model Content {
+  id          String      @id @default(cuid())
+  type        ContentType
+  title       String
+  slug        String?     @unique
+  description String?     @db.Text
+  body        String?     @db.Text
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  createdBy   String
+  updatedBy   String
+  createdByUser User      @relation("ContentCreatedBy", fields: [createdBy], references: [id])
+  updatedByUser User      @relation("ContentUpdatedBy", fields: [updatedBy], references: [id])
+}
+
+model Media {
+  id          String    @id @default(cuid())
+  type        MediaType
+  title       String?
+  description String?   @db.Text
+  url         String
+  cloudinaryId String?
+  width       Int?
+  height      Int?
+  size        Int?      // in bytes
+  format      String?   // jpg, png, mp4, etc
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  uploadedBy  String
+  uploadedByUser User    @relation(fields: [uploadedBy], references: [id])
+}
+
+model Article {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?   @db.Text
+  content     String    @db.Text
+  featuredImageId String?
+  featuredImage Media?  @relation(fields: [featuredImageId], references: [id])
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdBy   String
+  updatedBy   String
+  createdByUser User    @relation("ArticleCreatedBy", fields: [createdBy], references: [id])
+  updatedByUser User    @relation("ArticleUpdatedBy", fields: [updatedBy], references: [id])
+}
+
+model FAQ {
+  id          String    @id @default(cuid())
+  question    String
+  answer      String    @db.Text
+  order       Int       @default(0)
+  published   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ChatHistory {
+  id          String    @id @default(cuid())
+  sessionId   String
+  message     String    @db.Text
+  response    String?   @db.Text
+  isUser      Boolean
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+}
+
