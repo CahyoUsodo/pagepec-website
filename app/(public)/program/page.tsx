@@ -20,6 +20,8 @@ export default async function ProgramPage() {
     orderBy: { createdAt: "desc" },
   });
 
+  type ProgramType = typeof programs[0];
+
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -31,7 +33,7 @@ export default async function ProgramPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {programs.map((program) => (
+            {programs.map((program: ProgramType) => (
               <Card key={program.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle>{program.title}</CardTitle>

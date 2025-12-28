@@ -22,6 +22,8 @@ export default async function GaleriPage() {
   const images = media.filter((m) => m.type === "IMAGE");
   const videos = media.filter((m) => m.type === "VIDEO");
 
+  type MediaType = typeof media[0];
+
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -31,7 +33,7 @@ export default async function GaleriPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-6">Foto</h2>
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {images.map((image) => (
+              {images.map((image: MediaType) => (
                 <Card key={image.id} className="overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative aspect-square">
@@ -54,7 +56,7 @@ export default async function GaleriPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-6">Video</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos.map((video) => (
+              {videos.map((video: MediaType) => (
                 <Card key={video.id} className="overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative" style={{ paddingBottom: "56.25%" }}>

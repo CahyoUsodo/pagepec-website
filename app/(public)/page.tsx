@@ -23,6 +23,8 @@ export default async function HomePage() {
     take: 3,
   });
 
+  type ProgramType = typeof programs[0];
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com";
 
   const structuredData = {
@@ -73,7 +75,7 @@ export default async function HomePage() {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Program Kami</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {programs.map((program) => (
+              {programs.map((program: ProgramType) => (
                 <div
                   key={program.id}
                   className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
