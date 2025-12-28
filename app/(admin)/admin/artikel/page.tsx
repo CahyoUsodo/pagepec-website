@@ -26,6 +26,8 @@ export default async function ArtikelPage() {
     },
   });
 
+  type ArticleType = typeof articles[0];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminNavbar />
@@ -38,7 +40,7 @@ export default async function ArtikelPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
+          {articles.map((article: ArticleType) => (
             <Card key={article.id}>
               <CardHeader>
                 <div className="flex justify-between items-start">
