@@ -15,9 +15,16 @@ export const metadata: Metadata = {
 };
 
 export default async function TentangKamiPage() {
-  const aboutContent = await prisma.content.findFirst({
-    where: { type: "ABOUT" },
-  });
+  let aboutContent = null;
+
+  try {
+    aboutContent = await prisma.content.findFirst({
+      where: { type: "ABOUT" },
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    // Fallback: use null if database is unavailable
+  }
 
   return (
     <div className="min-h-screen py-12">

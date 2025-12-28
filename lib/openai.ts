@@ -14,24 +14,31 @@ export async function getChatbotResponse(
   sessionId?: string
 ): Promise<string> {
   // Get FAQ context
-  const faqs = await prisma.fAQ.findMany({
-    where: { published: true },
-    orderBy: { order: "asc" },
-    take: 10,
-  });
+  let faqs: any[] = [];
+  let contents: any[] = [];
+
+  try {
+    faqs = await prisma.fAQ.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      take: 10,
+    });
+
+    // Get content context
+    contents = await prisma.content.findMany({
+      take: 5,
+    });
+  } catch (error) {
+    console.error("Database error in chatbot:", error);
+    // Fallback: use empty arrays if database is unavailable
+  }
 
   type FAQType = typeof faqs[0];
+  type ContentType = typeof contents[0];
 
   const faqContext = faqs
     .map((faq: FAQType) => `Q: ${faq.question}\nA: ${faq.answer}`)
     .join("\n\n");
-
-  // Get content context
-  const contents = await prisma.content.findMany({
-    take: 5,
-  });
-
-  type ContentType = typeof contents[0];
 
   const contentContext = contents
     .map((content: ContentType) => `${content.title}: ${content.description || ""}`)
@@ -65,20 +72,25 @@ Jika pertanyaan tidak terkait dengan informasi di atas, jawab dengan sopan dan a
 
     // Save to chat history if sessionId provided
     if (sessionId) {
-      await prisma.chatHistory.createMany({
-        data: [
-          {
-            sessionId,
-            message,
-            isUser: true,
-          },
-          {
-            sessionId,
-            message: response,
-            isUser: false,
-          },
-        ],
-      });
+      try {
+        await prisma.chatHistory.createMany({
+          data: [
+            {
+              sessionId,
+              message,
+              isUser: true,
+            },
+            {
+              sessionId,
+              message: response,
+              isUser: false,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error("Error saving chat history:", error);
+        // Continue even if history save fails
+      }
     }
 
     return response;

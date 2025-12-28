@@ -17,10 +17,17 @@ export const metadata: Metadata = {
 };
 
 export default async function ProgramPage() {
-  const programs = await prisma.content.findMany({
-    where: { type: "PROGRAM" },
-    orderBy: { createdAt: "desc" },
-  });
+  let programs: any[] = [];
+
+  try {
+    programs = await prisma.content.findMany({
+      where: { type: "PROGRAM" },
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    // Fallback: use empty array if database is unavailable
+  }
 
   type ProgramType = typeof programs[0];
 

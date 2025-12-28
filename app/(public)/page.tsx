@@ -16,14 +16,22 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const homepageContent = await prisma.content.findFirst({
-    where: { type: "HOMEPAGE" },
-  });
+  let homepageContent = null;
+  let programs: any[] = [];
 
-  const programs = await prisma.content.findMany({
-    where: { type: "PROGRAM" },
-    take: 3,
-  });
+  try {
+    homepageContent = await prisma.content.findFirst({
+      where: { type: "HOMEPAGE" },
+    });
+
+    programs = await prisma.content.findMany({
+      where: { type: "PROGRAM" },
+      take: 3,
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    // Fallback: use empty data if database is unavailable
+  }
 
   type ProgramType = typeof programs[0];
 

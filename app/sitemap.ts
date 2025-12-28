@@ -7,15 +7,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com";
 
   // Get dynamic routes
-  const contents = await prisma.content.findMany({
-    where: { slug: { not: null } },
-    select: { slug: true, updatedAt: true },
-  });
+  let contents: any[] = [];
+  let articles: any[] = [];
 
-  const articles = await prisma.article.findMany({
-    where: { published: true },
-    select: { slug: true, updatedAt: true },
-  });
+  try {
+    contents = await prisma.content.findMany({
+      where: { slug: { not: null } },
+      select: { slug: true, updatedAt: true },
+    });
+
+    articles = await prisma.article.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
+    });
+  } catch (error) {
+    console.error("Database error in sitemap:", error);
+    // Fallback: use empty arrays if database is unavailable
+  }
 
   type ContentType = typeof contents[0];
   type ArticleType = typeof articles[0];

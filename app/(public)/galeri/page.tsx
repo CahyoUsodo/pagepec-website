@@ -16,10 +16,17 @@ export const metadata: Metadata = {
 };
 
 export default async function GaleriPage() {
-  const media = await prisma.media.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 20,
-  });
+  let media: any[] = [];
+
+  try {
+    media = await prisma.media.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    // Fallback: use empty array if database is unavailable
+  }
 
   type MediaType = typeof media[0];
 
