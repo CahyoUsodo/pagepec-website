@@ -74,6 +74,7 @@ model Media {
   updatedAt   DateTime  @updatedAt
   uploadedBy  String
   uploadedByUser User    @relation(fields: [uploadedBy], references: [id])
+  articles    Article[] // Relation to Article
 }
 
 model Article {
