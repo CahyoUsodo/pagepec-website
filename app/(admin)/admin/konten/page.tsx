@@ -23,6 +23,8 @@ export default async function KontenPage() {
     },
   });
 
+  type ContentType = typeof contents[0];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminNavbar />
@@ -35,7 +37,7 @@ export default async function KontenPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {contents.map((content) => (
+          {contents.map((content: ContentType) => (
             <Card key={content.id}>
               <CardHeader>
                 <CardTitle>{content.title}</CardTitle>
