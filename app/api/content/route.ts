@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { type, title, slug, description, body } = body;
+    const { type, title, slug, description, body: bodyContent } = body;
 
     if (!title || !type) {
       return NextResponse.json(
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         title,
         slug: slug || null,
         description: description || null,
-        body: body || null,
+        body: bodyContent || null,
         createdBy: (session.user as any).id,
         updatedBy: (session.user as any).id,
       },
