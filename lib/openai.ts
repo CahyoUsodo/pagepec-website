@@ -20,8 +20,10 @@ export async function getChatbotResponse(
     take: 10,
   });
 
+  type FAQType = typeof faqs[0];
+
   const faqContext = faqs
-    .map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`)
+    .map((faq: FAQType) => `Q: ${faq.question}\nA: ${faq.answer}`)
     .join("\n\n");
 
   // Get content context
@@ -29,8 +31,10 @@ export async function getChatbotResponse(
     take: 5,
   });
 
+  type ContentType = typeof contents[0];
+
   const contentContext = contents
-    .map((content) => `${content.title}: ${content.description || ""}`)
+    .map((content: ContentType) => `${content.title}: ${content.description || ""}`)
     .join("\n");
 
   const systemPrompt = `Anda adalah asisten chatbot untuk lembaga pendidikan bahasa Inggris. 
