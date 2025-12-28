@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Lembaga Pendidikan Bahasa Inggris - PagePEC",
   description: "Lembaga pendidikan bahasa Inggris terpercaya dengan program pembelajaran berkualitas tinggi",

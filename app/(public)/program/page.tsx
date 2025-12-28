@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Program - PagePEC",
   description: "Program pembelajaran bahasa Inggris yang kami tawarkan",

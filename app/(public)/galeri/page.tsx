@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Galeri - PagePEC",
   description: "Galeri foto dan video kegiatan lembaga pendidikan kami",

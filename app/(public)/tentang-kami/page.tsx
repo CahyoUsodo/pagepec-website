@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Tentang Kami - PagePEC",
   description: "Pelajari lebih lanjut tentang lembaga pendidikan bahasa Inggris kami",
