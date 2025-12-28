@@ -6,7 +6,18 @@ import { AdminNavbar } from "@/components/admin/admin-navbar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-// Badge component akan dibuat sederhana tanpa import terpisah
+import type { Prisma } from "@prisma/client";
+
+type ArticleWithRelations = Prisma.ArticleGetPayload<{
+  include: {
+    createdByUser: {
+      select: { name: true };
+    };
+    featuredImage: {
+      select: { url: true };
+    };
+  };
+}>;
 
 export default async function ArtikelPage() {
   const session = await getServerSession(authOptions);
@@ -39,7 +50,7 @@ export default async function ArtikelPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
+          {articles.map((article: ArticleWithRelations) => (
             <Card key={article.id}>
               <CardHeader>
                 <div className="flex justify-between items-start">
