@@ -15,6 +15,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { slug: true, updatedAt: true },
   });
 
+  type ContentType = typeof contents[0];
+  type ArticleType = typeof articles[0];
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -42,14 +45,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const contentRoutes: MetadataRoute.Sitemap = contents.map((content) => ({
+  const contentRoutes: MetadataRoute.Sitemap = contents.map((content: ContentType) => ({
     url: `${baseUrl}/program/${content.slug}`,
     lastModified: content.updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
 
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
+  const articleRoutes: MetadataRoute.Sitemap = articles.map((article: ArticleType) => ({
     url: `${baseUrl}/artikel/${article.slug}`,
     lastModified: article.updatedAt || new Date(),
     changeFrequency: "monthly" as const,
