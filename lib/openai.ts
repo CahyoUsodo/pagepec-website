@@ -86,7 +86,7 @@ Jika pertanyaan tidak terkait dengan informasi di atas, jawab dengan sopan dan a
     console.error("OpenAI API error:", error);
     
     // Fallback to FAQ matching
-    const matchingFaq = faqs.find((faq) =>
+    const matchingFaq = faqs.find((faq: FAQType) =>
       faq.question.toLowerCase().includes(message.toLowerCase()) ||
       message.toLowerCase().includes(faq.question.toLowerCase())
     );
