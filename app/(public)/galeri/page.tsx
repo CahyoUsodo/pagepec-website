@@ -19,10 +19,10 @@ export default async function GaleriPage() {
     take: 20,
   });
 
-  const images = media.filter((m) => m.type === "IMAGE");
-  const videos = media.filter((m) => m.type === "VIDEO");
-
   type MediaType = typeof media[0];
+
+  const images = media.filter((m: MediaType) => m.type === "IMAGE");
+  const videos = media.filter((m: MediaType) => m.type === "VIDEO");
 
   return (
     <div className="min-h-screen py-12">
